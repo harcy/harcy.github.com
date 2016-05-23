@@ -1,0 +1,664 @@
+<!doctype html>
+
+
+
+  
+
+
+<html class="theme-next pisces use-motion">
+<head>
+  <meta charset="UTF-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+
+
+
+
+
+
+
+
+
+
+
+  <link href="/vendors/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css"/>
+
+
+
+
+  <link href="//fonts.googleapis.com/css?family=Lato:300,400,700,400italic&subset=latin,latin-ext" rel="stylesheet" type="text/css">
+
+
+
+<link href="/vendors/font-awesome/css/font-awesome.min.css?v=4.4.0" rel="stylesheet" type="text/css" />
+
+<link href="/css/main.css?v=0.5.0" rel="stylesheet" type="text/css" />
+
+
+  <meta name="keywords" content="Hexo, NexT" />
+
+
+
+
+
+
+
+
+  <link rel="shortcut icon" type="image/x-icon" href="/favicon.ico?v=0.5.0" />
+
+
+
+
+
+
+<meta name="description" content="Java NIO BufferJava NIO是Java IO的改进，Java NIO提供了更好的I/O效率。Java NIO属于我们Linux I/O模型的I/O复用模型，底层实现的是linux">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Java NIO学习系列(一)">
+<meta property="og:url" content="http://yoursite.com/2016/04/06/Java-NIO学习系列-一/index.html">
+<meta property="og:site_name" content="Harcy's blog">
+<meta property="og:description" content="Java NIO BufferJava NIO是Java IO的改进，Java NIO提供了更好的I/O效率。Java NIO属于我们Linux I/O模型的I/O复用模型，底层实现的是linux">
+<meta property="og:updated_time" content="2016-04-06T07:53:31.884Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="Java NIO学习系列(一)">
+<meta name="twitter:description" content="Java NIO BufferJava NIO是Java IO的改进，Java NIO提供了更好的I/O效率。Java NIO属于我们Linux I/O模型的I/O复用模型，底层实现的是linux">
+
+
+
+<script type="text/javascript" id="hexo.configuration">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    scheme: 'Pisces',
+    sidebar: {"position":"left","display":"post"},
+    fancybox: true,
+    motion: true,
+    duoshuo: {
+      userId: 0,
+      author: '博主'
+    }
+  };
+</script>
+
+  <title> Java NIO学习系列(一) | Harcy's blog </title>
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="zh-Hans">
+
+  
+
+
+
+
+
+
+
+
+
+
+  
+  
+    
+  
+
+  <div class="container one-collumn sidebar-position-left page-post-detail ">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-meta ">
+  
+
+  <div class="custom-logo-site-title">
+    <a href="/"  class="brand" rel="start">
+      <span class="logo-line-before"><i></i></span>
+      <span class="site-title">Harcy's blog</span>
+      <span class="logo-line-after"><i></i></span>
+    </a>
+  </div>
+  <p class="site-subtitle">Good Good Study, Day Day After</p>
+</div>
+
+<div class="site-nav-toggle">
+  <button>
+    <span class="btn-bar"></span>
+    <span class="btn-bar"></span>
+    <span class="btn-bar"></span>
+  </button>
+</div>
+
+<nav class="site-nav">
+  
+
+  
+    <ul id="menu" class="menu">
+      
+        
+        <li class="menu-item menu-item-home">
+          <a href="/" rel="section">
+            
+              <i class="menu-item-icon fa fa-home fa-fw"></i> <br />
+            
+            首页
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-archives">
+          <a href="/archives" rel="section">
+            
+              <i class="menu-item-icon fa fa-archive fa-fw"></i> <br />
+            
+            归档
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-tags">
+          <a href="/tags" rel="section">
+            
+              <i class="menu-item-icon fa fa-tags fa-fw"></i> <br />
+            
+            标签
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-about">
+          <a href="/about" rel="section">
+            
+              <i class="menu-item-icon fa fa-user fa-fw"></i> <br />
+            
+            关于
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-commonweal">
+          <a href="/404.html" rel="section">
+            
+              <i class="menu-item-icon fa fa-heartbeat fa-fw"></i> <br />
+            
+            公益404
+          </a>
+        </li>
+      
+
+      
+    </ul>
+  
+
+  
+</nav>
+
+ </div>
+    </header>
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+            
+            
+              
+                Java NIO学习系列(一)
+              
+            
+          </h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            <span class="post-meta-item-icon">
+              <i class="fa fa-calendar-o"></i>
+            </span>
+            <span class="post-meta-item-text">发表于</span>
+            <time itemprop="dateCreated" datetime="2016-04-06T15:30:33+08:00" content="2016-04-06">
+              2016-04-06
+            </time>
+          </span>
+
+          
+
+          
+            
+              <span class="post-comments-count">
+                &nbsp; | &nbsp;
+                <a href="/2016/04/06/Java-NIO学习系列-一/#comments" itemprop="discussionUrl">
+                  <span class="post-comments-count ds-thread-count" data-thread-key="2016/04/06/Java-NIO学习系列-一/" itemprop="commentsCount"></span>
+                </a>
+              </span>
+            
+          
+
+          
+
+          
+          
+
+        </div>
+      </header>
+    
+
+
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <h2 id="Java-NIO-Buffer"><a href="#Java-NIO-Buffer" class="headerlink" title="Java NIO Buffer"></a>Java NIO Buffer</h2><p><em>Java NIO</em>是Java IO的改进，Java NIO提供了更好的I/O效率。Java NIO属于我们Linux I/O模型的I/O复用模型，底层实现的是linux<br><a id="more"></a><br>epoll的功能,本篇文章主要叫了Buffer，Buffer是Java NIO的关键一个类。<br>主要是引用了并发编程网的内容，<a href="http://ifeve.com/java-nio-all/" target="_blank" rel="external">原文链接</a>: <a href="http://ifeve.com/" target="_blank" rel="external">并发编程网</a></p>
+<h3 id="使用Buffer的一般遵循以下4个步骤"><a href="#使用Buffer的一般遵循以下4个步骤" class="headerlink" title="使用Buffer的一般遵循以下4个步骤"></a>使用Buffer的一般遵循以下4个步骤</h3><ol>
+<li>写入数据到Buffer</li>
+<li>调用flip()方法<blockquote>
+<p>flip()方法对Buffer进行了反转, &gt;当向Buffer写入数据时，Buffer会记录下写了多少数据。一旦需要<br>读取数据，就通过flip()方法将Buffer从写模式切换到读模式。在读模式下，可以读取之前写入到<br>Buffer的所有数据(Flip 体育领域翻译为”空翻”)</p>
+</blockquote>
+</li>
+<li>从Buffer中读取数据</li>
+<li><p>调用clear()方法或者compact()方法</p>
+<blockquote>
+<p>一旦读完了所有的数据，就需要清空Buffer,让它可以再次被写入。调用clear()或者compact()两种<br>方法。clear()会清空整个缓冲区，compact()只会清除已经读过的数据，任何未读的数据都被转移<br>到缓冲区的起始处，新写入的数据将放到缓冲区的未读数据的后面</p>
+</blockquote>
+<p> 下面是一个使用Buffer的例子</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line">   RandomAccessFile raf=<span class="keyword">new</span> RandomAccessFile(<span class="string">"C:\\Users\\lxchen\\Desktop\\cfgEnb.txt"</span>,<span class="string">"rw"</span>);</span><br><span class="line">   FileChannel fc=raf.getChannel();</span><br><span class="line">   <span class="comment">//create buffer with capacity of 1024 bytes</span></span><br><span class="line">   ByteBuffer buf=ByteBuffer.allocate(<span class="number">1024</span>);</span><br><span class="line">   <span class="comment">//read into buffer</span></span><br><span class="line">   <span class="keyword">int</span> n;</span><br><span class="line"><span class="keyword">while</span>((n=fc.read(buf))!=-<span class="number">1</span>)&#123;</span><br><span class="line">	System.out.print(<span class="string">"ChannelCodeRead"</span>+n);</span><br><span class="line">	buf.flip();<span class="comment">//make buffer ready to read</span></span><br><span class="line">	<span class="keyword">while</span>(buf.hasRemaining())</span><br><span class="line">		System.out.print(buf.getChar());<span class="comment">//read 1 byte at a time</span></span><br><span class="line">	buf.clear();<span class="comment">//make buffer ready to writing</span></span><br><span class="line">&#125;</span><br><span class="line">raf.close();</span><br></pre></td></tr></table></figure>
+</li>
+</ol>
+<h3 id="Buffer的capacity-position-amp-limit"><a href="#Buffer的capacity-position-amp-limit" class="headerlink" title="Buffer的capacity, position &amp; limit"></a>Buffer的capacity, position &amp; limit</h3><p>Buffer缓冲区本质上是一块可以写入数据，然后可以从中读取数据的内存。这个内存被NIO包装为<br>Buffer对象，并提供了一组方法用来方便访问这块内存<br>    了解Buffer原理，需要理解Buffer的三个属性：</p>
+<ul>
+<li>capacity</li>
+<li>position</li>
+<li>limit</li>
+</ul>
+<p><strong>capacity</strong></p>
+<blockquote>
+<p>position和limit属性的含义取决于Buffer处在read模式还是write模式，而capacity的含义无论在什么模式下都是一样的</p>
+</blockquote>
+<p><strong>position</strong></p>
+<blockquote>
+<p>当你写数据到Buffer中，position表示当前位置。初始的position位置为0，当一个byte,long等<br>数据写入到Buffer后，position会向前移动到下一个可插入数据的Buffer单元。position最大值<br>可为capacity-1</p>
+<p>当你从Buffer中读取数据时，也是从某个特定位置读。当将Buffer从写模式切换到读模式<br>(flip()函数)，position值会被重置为0，当从Buffer的position处读取数据时，position会向前<br>移动到下一个可读的位置</p>
+</blockquote>
+<p><strong>limit</strong></p>
+<blockquote>
+<p>在写模式下，Buffer的limit表示你最多能往Buffer里写入多少数据，写模式下，limit等于<br>Buffer的capacity</p>
+<p>当切换到读模式时，limit表示你最多能读到多少数据。因此，当Buffer切换到读模式时，limit<br>会被设置成写模式下的position值。也就是你能读到之前写入的所有数据(limit被设置成已写数<br>据的数量，这个值在写模式下就是position的值)</p>
+</blockquote>
+<h3 id="Buffer的分配"><a href="#Buffer的分配" class="headerlink" title="Buffer的分配"></a>Buffer的分配</h3><p>想获得一个Buffer对象首先要进行分配，每一个Buffer类都有一个allocate方法。下面的例子<br><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">//分配capacity为1024 byte的一个ByteBuffer</span></span><br><span class="line">ByteBuffer buf=ByteBuffer.allocate(<span class="number">1024</span>);</span><br><span class="line"><span class="comment">//分配可以存储1024个字符(char)的CharBuffer</span></span><br><span class="line">CharBuffer buf=CharBuffer.allocate(<span class="number">1024</span>);</span><br></pre></td></tr></table></figure></p>
+<h3 id="Buffer的读写操作"><a href="#Buffer的读写操作" class="headerlink" title="Buffer的读写操作"></a>Buffer的读写操作</h3><ul>
+<li>Buffer 读操作<br><em>Buffer的读操作有两种方式</em></li>
+</ul>
+<ol>
+<li><p>从Buffer中读取数据到Channel中</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"> <span class="comment">//read from buffer into channel</span></span><br><span class="line"><span class="keyword">int</span> bytesWriten = channel.write(buf);</span><br></pre></td></tr></table></figure>
+</li>
+<li><p>使用buffer的get()方法从Buffer中读取数据</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">byte</span> bytes=buf.get();</span><br></pre></td></tr></table></figure>
+</li>
+</ol>
+<ul>
+<li>Buffer 写操作<br><em>Buffer的写操作有两种方式</em></li>
+</ul>
+<ol>
+<li><p>从Channel写数据到Buffer</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">//read into buffer from channel</span></span><br><span class="line"><span class="keyword">int</span> bytesRead=channel.read(buf);</span><br></pre></td></tr></table></figure>
+</li>
+<li><p>通过Buffer的put()方法写数据到Buffer里</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">buf.put();</span><br></pre></td></tr></table></figure>
+</li>
+</ol>
+<h3 id="Buffer的mark-amp-reset-方法"><a href="#Buffer的mark-amp-reset-方法" class="headerlink" title="Buffer的mark() &amp; reset()方法"></a>Buffer的mark() &amp; reset()方法</h3><p>mark()方法，可以标记Buffer中的一个特定position,之后可以通过调用Buffer.reset()方法恢复到这个position的值。如下例子：<br><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br></pre></td><td class="code"><pre><span class="line">   <span class="comment">/*</span><br><span class="line">   buffer.mark()；</span><br><span class="line">   //call buffer.get() a couple of times,e.g.during parsing.</span><br><span class="line">   buffer.reset()；//set position back to mark</span><br><span class="line">   e.g. code by use mark() &amp; reset() function</span><br><span class="line">   */</span></span><br><span class="line">   RandomAccessFile raf=<span class="keyword">new</span> RandomAccessFile(<span class="string">"C:\\Users\\lxchen\\Desktop\\test.txt"</span>, <span class="string">"rw"</span>);</span><br><span class="line">FileChannel fc=raf.getChannel();</span><br><span class="line">ByteBuffer buf=ByteBuffer.allocate(<span class="number">520</span>);</span><br><span class="line"><span class="keyword">int</span> n;</span><br><span class="line">n = fc.read(buf);</span><br><span class="line">buf.flip();</span><br><span class="line"><span class="keyword">if</span>(buf.hasRemaining())</span><br><span class="line">	System.out.println((<span class="keyword">char</span>)buf.get());</span><br><span class="line">buf.mark();</span><br><span class="line"><span class="keyword">if</span>(buf.hasRemaining())</span><br><span class="line">	System.out.println((<span class="keyword">char</span>)buf.get());</span><br><span class="line">buf.reset();</span><br><span class="line"><span class="keyword">if</span>(buf.hasRemaining())</span><br><span class="line">	System.out.println((<span class="keyword">char</span>)buf.get());</span><br><span class="line">raf.close();</span><br></pre></td></tr></table></figure></p>
+<h3 id="Scatter-amp-Gather"><a href="#Scatter-amp-Gather" class="headerlink" title="Scatter &amp; Gather"></a>Scatter &amp; Gather</h3><p>Java NIO支持Scatterr和Gather，Scatter/Gather用来描述从Channel中读取或者写入到Channel的操作</p>
+<blockquote>
+<p>Scatter 从Channel中读取是指在读操作时将读取的数据写入到多个Buffer中。因此，Channel将从Channel读取的数据scatter(分散)到多个Buffer中，每个buf的大小必须固定，只有写完一个buf，才会继续写下一个buf。<br><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">ByteBuffer bufone=ByteBuffer.allocate(<span class="number">128</span>);</span><br><span class="line">ByteBuffer buftwo=ByteBuffer.allocate(<span class="number">1024</span>);</span><br><span class="line">ByteBuffer[] bufArray=&#123;bufone,buftwo&#125;;</span><br><span class="line"><span class="comment">//write date into buffer from channel</span></span><br><span class="line">channel.read(bufArray);</span><br></pre></td></tr></table></figure></p>
+<p>Gather 写入Channle是指在写操作的时将多个Buffer的数据写入到同一个Channel中。因此，Channel将多个Buffer中的数据gather(聚集)到Channel中,能较好的处理动态信息。<br><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">ByteBuffer bufone=ByteBuffer.allocate(<span class="number">128</span>);</span><br><span class="line">ByteBuffer buftwo=ByteBuffer.allocate(<span class="number">1024</span>);</span><br><span class="line">ByteBuffer[] bufArray=&#123;bufone,buftwo&#125;;</span><br><span class="line"><span class="comment">//read date from buf and write into channel;</span></span><br><span class="line">channel.write(bufArray);</span><br></pre></td></tr></table></figure></p>
+</blockquote>
+
+      
+    </div>
+
+    <div>
+      
+        
+      
+    </div>
+
+    <footer class="post-footer">
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2016/04/04/Linux-C-Error-Code/" rel="next" title="Linux C Error Code">
+                <i class="fa fa-chevron-left"></i> Linux C Error Code
+              </a>
+            
+          </div>
+
+          <div class="post-nav-prev post-nav-item">
+            
+              <a href="/2016/04/21/Git基本的常用命令/" rel="prev" title="Git基本的常用命令">
+                Git基本的常用命令 <i class="fa fa-chevron-right"></i>
+              </a>
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </article>
+
+
+
+    <div class="post-spread">
+      
+    </div>
+  </div>
+
+
+          </div>
+          
+
+
+          
+  <div class="comments" id="comments">
+    
+      <div class="ds-thread" data-thread-key="2016/04/06/Java-NIO学习系列-一/"
+           data-title="Java NIO学习系列(一)" data-url="http://yoursite.com/2016/04/06/Java-NIO学习系列-一/">
+      </div>
+    
+  </div>
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap" >
+            文章目录
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview">
+            站点概览
+          </li>
+        </ul>
+      
+
+      <section class="site-overview sidebar-panel ">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+          <img class="site-author-image" itemprop="image"
+               src="/images/avatar.png"
+               alt="Harcy Chan" />
+          <p class="site-author-name" itemprop="name">Harcy Chan</p>
+          <p class="site-description motion-element" itemprop="description">Let's Coding</p>
+        </div>
+        <nav class="site-state motion-element">
+          <div class="site-state-item site-state-posts">
+            <a href="/archives">
+              <span class="site-state-item-count">6</span>
+              <span class="site-state-item-name">日志</span>
+            </a>
+          </div>
+
+          
+
+          
+            <div class="site-state-item site-state-tags">
+              <a href="/tags">
+                <span class="site-state-item-count">1</span>
+                <span class="site-state-item-name">标签</span>
+              </a>
+            </div>
+          
+
+        </nav>
+
+        
+
+        <div class="links-of-author motion-element">
+          
+            
+              <span class="links-of-author-item">
+                <a href="https://github.com/harcy" target="_blank">
+                  
+                    <i class="fa fa-github"></i>
+                  
+                  GitHub
+                </a>
+              </span>
+            
+              <span class="links-of-author-item">
+                <a href="https://www.facebook.com/harcy.chen" target="_blank">
+                  
+                    <i class="fa fa-facebook"></i>
+                  
+                  Facebook
+                </a>
+              </span>
+            
+              <span class="links-of-author-item">
+                <a href="https://twitter.com/Harcy_Shu" target="_blank">
+                  
+                    <i class="fa fa-twitter"></i>
+                  
+                  Twitter
+                </a>
+              </span>
+            
+          
+        </div>
+
+        
+        
+
+        
+        <div class="links-of-blogroll motion-element">
+          
+            <div class="links-of-blogroll-title">Links</div>
+            <ul class="links-of-blogroll-list">
+              
+                <li class="links-of-blogroll-item">
+                  <a href="http://www.apple.com/" target="_blank">Apple</a>
+                </li>
+              
+                <li class="links-of-blogroll-item">
+                  <a href="https://www.whitehouse.gov/" target="_blank">USA Government</a>
+                </li>
+              
+            </ul>
+          
+        </div>
+
+      </section>
+
+      
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+            
+              
+            
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#Java-NIO-Buffer"><span class="nav-number">1.</span> <span class="nav-text">Java NIO Buffer</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#使用Buffer的一般遵循以下4个步骤"><span class="nav-number">1.1.</span> <span class="nav-text">使用Buffer的一般遵循以下4个步骤</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Buffer的capacity-position-amp-limit"><span class="nav-number">1.2.</span> <span class="nav-text">Buffer的capacity, position & limit</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Buffer的分配"><span class="nav-number">1.3.</span> <span class="nav-text">Buffer的分配</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Buffer的读写操作"><span class="nav-number">1.4.</span> <span class="nav-text">Buffer的读写操作</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Buffer的mark-amp-reset-方法"><span class="nav-number">1.5.</span> <span class="nav-text">Buffer的mark() & reset()方法</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Scatter-amp-Gather"><span class="nav-number">1.6.</span> <span class="nav-text">Scatter & Gather</span></a></li></ol></li></ol></div>
+            
+          </div>
+        </section>
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright" >
+  
+  &copy; 
+  <span itemprop="copyrightYear">2016</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">Harcy Chan</span>
+</div>
+
+<div class="powered-by">
+  由 <a class="theme-link" href="http://hexo.io">Hexo</a> 强力驱动
+</div>
+
+<div class="theme-info">
+  主题 -
+  <a class="theme-link" href="https://github.com/iissnan/hexo-theme-next">
+    NexT.Pisces
+  </a>
+</div>
+
+
+
+      </div>
+    </footer>
+
+    <div class="back-to-top">
+      <i class="fa fa-arrow-up"></i>
+    </div>
+  </div>
+
+  
+
+
+  
+
+
+
+
+<script type="text/javascript">
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+  <script type="text/javascript" src="/vendors/jquery/index.js?v=2.1.3"></script>
+
+  <script type="text/javascript" src="/vendors/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
+
+  <script type="text/javascript" src="/vendors/jquery_lazyload/jquery.lazyload.js?v=1.9.7"></script>
+
+  <script type="text/javascript" src="/vendors/velocity/velocity.min.js"></script>
+
+  <script type="text/javascript" src="/vendors/velocity/velocity.ui.min.js"></script>
+
+  <script type="text/javascript" src="/vendors/fancybox/source/jquery.fancybox.pack.js"></script>
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/utils.js?v=0.5.0"></script>
+
+  <script type="text/javascript" src="/js/src/motion.js?v=0.5.0"></script>
+
+
+
+  
+  
+
+
+  <script type="text/javascript" src="/js/src/affix.js?v=0.5.0"></script>
+
+  <script type="text/javascript" src="/js/src/schemes/pisces.js?v=0.5.0"></script>
+
+
+
+  
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=0.5.0"></script>
+<script type="text/javascript" src="/vendors/jquery-scrollintoview/jquery.scrollintoview.min.js?v=0.5.0"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=0.5.0"></script>
+
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/bootstrap.js?v=0.5.0"></script>
+
+
+
+  
+
+  
+    
+  
+
+  <script type="text/javascript">
+    var duoshuoQuery = {short_name:"harcy-note"};
+    (function() {
+      var ds = document.createElement('script');
+      ds.type = 'text/javascript';ds.async = true;
+      ds.id = 'duoshuo-script';
+      ds.src = (document.location.protocol == 'https:' ? 'https:' : 'http:') + '//static.duoshuo.com/embed.js';
+      ds.charset = 'UTF-8';
+      (document.getElementsByTagName('head')[0]
+      || document.getElementsByTagName('body')[0]).appendChild(ds);
+    })();
+  </script>
+
+  
+    
+  
+
+
+
+
+
+  
+  
+  
+
+  
+
+  
+
+</body>
+</html>
